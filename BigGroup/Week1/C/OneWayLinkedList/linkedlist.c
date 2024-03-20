@@ -3,7 +3,7 @@
 #include <string.h>
 #include <assert.h>
 #include "linkedlist.h"
-// version:1.0 tested:yes, everything work pass
+// version:1.0 tested:yes, everything work well
 
 // test pass
 LinkedList* getLoopIntegerList(int num, int entranceIndex) {
