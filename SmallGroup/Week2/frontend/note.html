@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>记事本</title>
+    <link rel="stylesheet" type="text/css" href="page.css">
+    <link rel="stylesheet" type="text/css" href="toolbar.css">
+</head>
+<body>
+
+<!-- 工具栏部分 -->
+<div id="toolbarDiv">
+    <div id="toolbar" style="display: flexbox;">
+        <button onclick="displaySearchBar(this)">
+            <img src="search.svg"></img>
+        </button>
+        <button onclick="displayFileList(this)">
+            <img src="folder.svg"></img>
+        </button>
+        <button onclick="saveFile()">
+            <img src="save.svg"></img>
+        </button>
+    </div>
+</div>
+
+<!-- 文档部分 -->
+<div class="page">
+    <div style="height: 20px;"></div>
+    <h1 id="head" contenteditable="true" data-placeholder="请输入标题"></h1>
+    <div id="content" contenteditable="true" data-placeholder="请输入正文..."></div>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
