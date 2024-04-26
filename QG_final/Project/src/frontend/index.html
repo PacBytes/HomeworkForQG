@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link rel="stylesheet" href="./css/index.css">
+<!-- 预加载 -->
+<img src="./assets/card1.jpg" style="display: none;"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<body>
+
+    <!-- 加载 components 中子页面 HTML 和 JS 函数-->
+    <script type="module">
+        import Router from './components/router.js';
+        import { meetingHTML, meetingRender, chartGroup } from './components/meeting.js';
+        import { profileHTML, profileRender } from './components/profile.js';
+        import { userSettingHTML, historySettingHTML, queryUser } from './components/admin.js';
+        let app = document.getElementById("app");
+        let router = new Router(app);
+
+        // 需要的函数全部都得注册到全局中
+        window.router = router;
+        window.meetingRender = meetingRender;
+        window.profileRender = profileRender;
+        window.queryUser = queryUser;
+
+        router.route('/', () => {});
+
+        router.route('/meeting', () => {
+            app.innerHTML = meetingHTML;
+            meetingRender();
+
+            chartGroup.speakTimeChart.data.datasets[0].data = [6, 8, 8, 6];
+            chartGroup.speakTimeChart.update();
+        });
+
+        router.route('/profile', () => {
+            app.innerHTML = profileHTML;
+            profileRender();
+        });
+
+        router.route('/admin/historySetting', () => {
+            app.innerHTML = historySettingHTML;
+        });
+
+        router.route('/admin/userSetting', () => {
+            app.innerHTML = userSettingHTML;
+        });
+
+        router.route('/logout', () => {
+            localStorage.removeItem("Authorization");
+            window.location.href = "./login.html";
+        });
+        
+    </script>
+
+    <nav class="sidebar close">
+        <header>
+            <div class="header-wrapper">
+                <img src="./assets/QG-LOGO.jpg" alt="logo">
+                <div class="header-text">
+                    <span class="header-text1">
+                        <h1>QG Studio</h1>
+                        <a>Metting</a>
+                    </span>
+                    <p>Data Visualization System</p>
+                </div>
+            </div>
+            <i class='bx bxs-chevron-right toggle'></i>
+        </header>
+
+        <div class="menu-wrapper">
+            <ul>
+                <li onclick="router.push('/meeting')">
+                    <i class='bx bx-objects-vertical-bottom icon' ></i>
+                    <span class="text">会议情况</span>
+                </li>
+                <li onclick="router.push('/profile')">
+                    <i class='bx bx-user icon' ></i>
+                    <span class="text">个人中心</span>
+                </li>
+                <li class="sub">
+                    <i class='bx bx-cog icon' ></i>
+                    <span class="text">管理菜单</span>
+                    <i class="bx bxs-chevron-down icon expand"></i>
+                    <ul>
+                        <li onclick="router.push('/admin/userSetting')">
+                            <i class='bx bxs-user-detail sub-icon'></i>
+                            <span class="sub-text">用户管理</span>
+                        </li>
+                        <li onclick="router.push('/admin/historySetting')">
+                            <i class='bx bx-history sub-icon'></i>
+                            <span class="sub-text">数据更新管理</span>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="bottom-wrapper">
+                <li onclick="router.push('/logout')">
+                    <i class='bx bx-log-out icon' ></i>
+                    <span class="text">退出登录</span>
+                </li>
+                <li class="moon-sun-wrapper">
+                    <div class="moon-sun-icon">
+                        <i class='bx bx-moon icon moon' ></i>
+                        <i class='bx bx-sun icon sun' ></i>
+                    </div>
+                    <span class="text">暗黑模式</span>
+                    <div class="toggle-switch">
+                        <span class="switch"></span>
+                    </div>
+                </li>
+
+            </div>
+        </div>
+    </nav>
+
+    <div id="app" class="fullscreen"></div>
+
+
+    <!-- 全局行为 -->
+    <script>
+        // 全局 fetch 拦截加入验证头，捕获过期 token
+        // 猴子补丁
+        // 别名原来的 fetch 方法
+        const { fetch: originalFetch } = window;
+        window.fetch = async (resource, options = {}) => {
+            // 自动补全服务器路径
+            if (resource.startsWith("/")) {
+                resource = "http://localhost:3002" + resource;
+            }
+            // 没有 headers 要补齐 headers
+            if (!options.headers) options.headers = {};
+            if (!options.headers.Authorization) {
+                // 自动从 localStorage 中拿出来补全上去
+                let authorization_token = localStorage.getItem("Authorization");
+                if (authorization_token) {
+                    options.headers.Authorization = authorization_token;
+                } else {
+                    // 回去登录
+                    window.location.href = "./login.html";
+                }
+            }
+
+            // 返回 resopnse 对象;
+            return await originalFetch(resource, options);
+        }
+
+        // 刚进主界面就验证
+        var authorization_token = window.localStorage.getItem("Authorization");
+        if (authorization_token == null) {
+            window.location.href = "login.html";
+        }
+
+        // 主页面 - 侧边栏行为
+        const body = document.querySelector("body");
+        const toggleSwitch = body.getElementsByClassName("toggle-switch")[0];
+        toggleSwitch.addEventListener("click", ()=>{
+            body.classList.toggle("dark");
+        })
+
+        const sidebar = body.getElementsByClassName("sidebar")[0];
+        const toggle = body.getElementsByClassName("toggle")[0];
+        const appDiv = document.getElementById("app");
+        toggle.addEventListener("click", ()=>{
+            sidebar.classList.toggle("close");
+            appDiv.classList.toggle("fullscreen");
+        })
+
+        const admin = body.getElementsByClassName("sub")[0];
+        const adminUl = admin.getElementsByTagName("ul")[0];
+        admin.addEventListener("click", ()=>{
+            adminUl.classList.toggle("show");
+        })
+
+        // 视窗太小检测
+        var mediaQueryList = window.matchMedia('(max-width: 1024px)');
+        mediaQueryList.addListener((mql) => {
+            if (mql.matches) {
+                sidebar.classList.add("close");
+            } else {
+                sidebar.classList.remove("close");
+            }
+        });
+
+        // 表格更新函数
+        function updateTable(data, tableId, cells, saveFuntion, deleteFunction) {
+            // 获取表格元素
+            var table = document.getElementById(tableId);
+            var tbody = table.getElementsByTagName('tbody')[0];
+
+            // 清空表格内容
+            tbody.innerHTML = '';
+
+            // 遍历数据并填充表格
+            data.forEach(function(singleObj) {
+                // 创建表格行
+                var row = document.createElement('tr');
+
+                // 创建单元格并填充数据
+                cells.forEach(function(prop) {
+                    var cell = document.createElement('td');
+                    cell.textContent = singleObj[prop];
+                    row.appendChild(cell);
+                });
+
+                // 创建操作按钮单元格
+                var actionCell = document.createElement('td');
+                var buttonWrapper = document.createElement('div');
+                buttonWrapper.className = 'button-wrapper';
+                var editButton = document.createElement('button');
+                editButton.className = 'add';
+                editButton.textContent = '编辑';
+
+                // 给编辑按钮添加点击事件监听器
+                editButton.addEventListener('click', function() {
+                    let tdElements = editButton.parentNode.parentNode.parentNode.childNodes;
+                    if (editButton.innerHTML === "编辑") {
+                        for (let i = 0; i < cells.length; ++i) {
+                            if (cells[i] === "username" || cells[i] === "time") {
+                                continue;
+                            }
+                            tdElements[i].setAttribute('contenteditable', true);
+                        }
+                        editButton.innerHTML = "保存";
+                    } else{
+                            if (editButton.innerHTML === "保存") {
+                                let tdObjects = {};
+                                for (let i = 0; i < cells.length; ++i) {
+                                    tdElements[i].setAttribute('contenteditable', false);
+                                    tdObjects[cells[i]] = tdElements[i].innerHTML;
+                                }
+                                editButton.innerHTML = "编辑";
+                                saveFuntion(JSON.stringify(tdObjects));
+                        }
+                    }
+                    
+                });
+
+                var removeButton = document.createElement('button');
+                removeButton.className = 'remove';
+                removeButton.textContent = '删除';
+                removeButton.addEventListener('click', function() {
+                    let tdElements = removeButton.parentNode.parentNode.parentNode.childNodes;
+                    let tdObjects = {};
+                    for (let i = 0; i < cells.length; ++i) {
+                        tdObjects[cells[i]] = tdElements[i].innerHTML;
+                    }
+                    deleteFunction(JSON.stringify(tdObjects));
+                })
+
+                buttonWrapper.appendChild(editButton);
+                buttonWrapper.appendChild(removeButton);
+                actionCell.appendChild(buttonWrapper);
+                row.appendChild(actionCell);
+
+                // 将行添加到表格中
+                tbody.appendChild(row);
+            });
+    }
+
+    // input 清空函数
+    function clearInputs() {
+        // 选择所有输入元素
+        const inputs = document.querySelectorAll('.input-wrapper input');
+        inputs.forEach(input =>{
+            input.value = "";
+        })
+    }
+    </script>
+</body>

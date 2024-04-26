@@ -1,0 +1,186 @@
+* {
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    margin: 0;
+    background-image: url(../assets/bg3.jpg);
+}
+
+.box {
+    box-shadow: 10px 10px 66px #cfcfcf80;
+    width: 90vw;
+    height: 85vh;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 15px;
+    overflow: hidden;
+    display: flex;
+    .forms {
+        width: 50%;
+        height: 100%;
+        background-color: #fff;
+        border-radius: 10px 0 0 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        position: relative;
+        .form-wrapper {
+            width:50%;
+            .title {
+                font-size: 20px;
+                margin: 5% 0;
+                h1 {
+                    margin: 6px, 0;
+                }
+                span {
+                    color: #bfbfbf;
+                }
+            }
+            .input-wrapper {
+                width: 100%;
+                .input-item {
+                    margin: 12px 0;
+                    .input-title {
+                        margin: 10px, 0;
+                        font-weight: 600;
+                        font-size: 18px;
+                    }
+                    
+                    .ipt {
+                        display: flex;
+                        width: 100%;
+                        height: 40px;
+                        border: 1px solid #cfcfcf;
+                        border-radius: 10px;
+                        outline: none;
+                        padding: 8px;
+                        box-sizing: border-box;
+                        &:focus {
+                            border: 2px solid black;
+                        }
+                    }
+                    
+                    .tips {
+                        margin: 4px 0;
+                        font-size: 14px;
+                        font-weight: 100;
+
+                    }
+                }
+
+                .get-code {
+                    display: flex;
+                    width: 100%;
+                    height: 40px;
+                    .ipt {
+                        display: inline-block;
+                        width: 70%;
+                        
+                        border-radius: 8px 0 0 8px;
+                    }
+                    .btn {
+                        width: 30%;
+                        border-radius: 0 8px 8px 0;
+                    }
+                }
+
+                .btn {
+                    background-color: #000;
+                    border: 0;
+                    color: #fff;
+                }
+
+                .register {
+                    width: 100%;
+                    height: 50px;
+                    font-size: 18px;
+                    font-weight: 600;
+                    margin: 10px 0;
+                    border-radius: 8px;
+                    cursor: pointer;
+                }
+
+                .login-tips {
+                    text-align: center;
+                    color: #8a8a8a;
+                    span {
+                        cursor: pointer;
+                        color: black;
+                    }
+                }
+            }
+        }
+    }
+
+    .pic {
+        width: 50%;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+        border-radius: 0 10px 10px 0;
+        .pic-text{
+            width: 100%;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 40px;
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            letter-spacing: 5px;
+            word-spacing: 11px;
+            z-index: 1;
+            font-weight: 600;
+        }
+        img {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            object-fit: cover;
+            animation: photo-animation 120s;
+
+        }
+    }
+}
+
+@keyframes photo-animation {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+    
+}
+
+@media (max-width: 1024px) {
+    .box {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+        .forms {
+            width: 100%;
+            border-radius: 0;
+            .form-wrapper {
+                width: 75%;
+            }
+        }
+        .pic {
+            display: none;
+        }
+    }
+
+}

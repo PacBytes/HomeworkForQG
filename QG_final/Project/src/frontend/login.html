@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>登录-QG会议可视化系统</title>
+</head>
+<link rel="stylesheet" href="./css/login.css">
+<body>
+    <script>
+        function login() {
+            const json_data = {};
+            let input = document.getElementsByTagName("input");
+            let props = ["username", "password"];
+            for (let i = 0; i < props.length; ++i) {
+                json_data[props[i]] = input[i].value;
+            }
+
+            fetch("http://localhost:3002/api/login", {
+                method: "POST",
+                body: JSON.stringify(json_data),
+            }).then((res)=>{
+                if (res.status == 401) alert("账号或密码错误！");
+                if (res.status == 200) {
+                    res.json().then((data)=>{
+                        console.log(data);
+                        console.log("logging...")
+                        window.localStorage.removeItem("Authorizetion");
+                        console.log(data.authorization);
+                        window.localStorage.setItem("Authorization", data.authorization);
+                        window.location.href = "./index.html";
+                    })
+                }
+            })
+        }
+    </script>
+    <div class="box">
+        <div class="forms">
+            <div class="form-wrapper">
+                <div class="title">
+                    <h1>登录</h1>
+                    <span>开始使用 QG 会议可视化系统！</span>
+                </div>
+                <div class="input-wrapper">
+                    <div class="input-item">
+                        <span class="input-title">账号</span>
+                        <input type="text" class="ipt">
+                    </div>
+                    <div class="input-item">
+                        <span class="input-title">密码</span>
+                        <input type="password" class="ipt">
+                    </div>
+                    <button class="btn login" onclick="login()">登录</button>
+                    <div class="register-tips">
+                        还没有账户？ <span onclick="window.location.href = './register.html'">立即注册</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="pic">
+            <div class="pic-text">QG MEETS YOU</div>
+            <img src="./assets/pic4.jpg" alt="展示图">
+        </div>
+    </div>
+</body>

@@ -1,0 +1,169 @@
+:root {
+  --body-color: #E4E9F7;
+  --sidebar-color: #fff;
+  --theme-color: #695CFE;
+  --theme-color-light: #F6F5FF;
+  --toggle-color: #DDD;
+  --text-color: #000;
+  --sidebar-tran02: all 0.3s ease;
+  --sidebar-tran03: all 0.3s ease;
+  --sidebar-tran04: all 0.4s ease;
+  --sidebar-tran05: all 0.5s ease;
+}
+
+#userSetting {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  color: var(--text-color);
+}
+
+.list-wrapper, .search-wrapper {
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--sidebar-color);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+.list-wrapper button, .search-wrapper button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 34px;
+  background-color: rgba(255, 255, 255, 0.9333333333);
+  border: 1px solid #cfcfcf;
+  border-radius: 11px;
+  margin: 8px 4px;
+}
+.list-wrapper button:hover, .search-wrapper button:hover {
+  cursor: pointer;
+}
+.list-wrapper .button-wrapper, .search-wrapper .button-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.search-wrapper {
+  margin-top: 10px;
+}
+.search-wrapper .form-wrapper {
+  font-size: 14px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 12px;
+}
+.search-wrapper .form-wrapper .input-wrapper {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  box-sizing: border-box;
+}
+.search-wrapper .form-wrapper .input-wrapper .input-item {
+  display: inline-block;
+  margin: 12px;
+}
+.search-wrapper .form-wrapper .input-wrapper .input-item input {
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  max-width: 200px;
+  padding: 6px 10px;
+  outline: none;
+  caret-color: var(--theme-color);
+}
+.search-wrapper .form-wrapper .input-wrapper .input-item input::-moz-placeholder {
+  color: #afafaf;
+}
+.search-wrapper .form-wrapper .input-wrapper .input-item input::placeholder {
+  color: #afafaf;
+}
+.search-wrapper .form-wrapper .input-wrapper .input-item input:focus {
+  border: 1px solid var(--theme-color);
+  box-shadow: 0 0 4px 0 var(--theme-color);
+}
+.search-wrapper .form-wrapper .button-wrapper button.search {
+  border: 1px solid var(--theme-color);
+  color: var(--theme-color);
+}
+.search-wrapper .form-wrapper .button-wrapper button i {
+  margin-right: 6px;
+}
+
+.list-wrapper {
+  padding-bottom: 30px;
+}
+.list-wrapper .header-wrapper {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.list-wrapper .header {
+  display: inline-block;
+}
+.list-wrapper .button-wrapper {
+  display: flex;
+  margin: 0;
+}
+.list-wrapper .button-wrapper .add {
+  border: 1px solid var(--theme-color);
+  color: var(--theme-color);
+}
+.list-wrapper .table-container {
+  border-collapse: collapse;
+  margin-top: 6px;
+  overflow: scroll;
+  border: 0.5px solid #ddd;
+  border-radius: 11px;
+  height: 280px;
+}
+.list-wrapper .table-wrapper {
+  border-collapse: collapse;
+  border-radius: 11px;
+  border: 0.5px solid #ddd;
+  width: 1120px;
+}
+.list-wrapper .table-wrapper table {
+  min-width: 100%;
+  border: none;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.list-wrapper .table-wrapper table th, .list-wrapper .table-wrapper table td {
+  width: 60px;
+}
+.list-wrapper .table-wrapper table thead {
+  font-size: 16px;
+  background-color: var(--theme-color-light);
+}
+.list-wrapper .table-wrapper table thead th {
+  padding: 6px;
+  border: 0.5px solid #ddd;
+}
+.list-wrapper .table-wrapper table tbody td {
+  text-align: center;
+  border: 0.5px solid #ddd;
+}
+.list-wrapper .table-wrapper table tbody td .add {
+  color: var(--theme-color);
+  border: 1px solid var(--theme-color);
+}
+.list-wrapper .table-wrapper table tbody td .remove {
+  color: #f98f95;
+  border: 1px solid #f98f95;
+}
+.list-wrapper .table-wrapper table tbody tr:nth-child(2n) {
+  background-color: #faf9ff;
+}/*# sourceMappingURL=userSetting.css.map */

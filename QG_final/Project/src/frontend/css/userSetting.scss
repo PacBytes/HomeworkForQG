@@ -1,0 +1,181 @@
+:root {
+    --body-color: #E4E9F7;
+    --sidebar-color: #fff;
+    --theme-color: #695CFE;
+    --theme-color-light: #F6F5FF;
+    --toggle-color: #DDD;
+    --text-color: #000;
+    --sidebar-tran02: all 0.3s ease;
+    --sidebar-tran03: all 0.3s ease;
+    --sidebar-tran04: all 0.4s ease;
+    --sidebar-tran05: all 0.5s ease;
+}
+$theme-color-table: mix(#F6F5FF, #fff, 60%);
+
+#userSetting {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    color: var(--text-color);
+}
+
+.list-wrapper, .search-wrapper {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--sidebar-color);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 20px;
+
+    button {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width: 80px;
+        height: 34px;
+        background-color: #ffffffee;
+        border: 1px solid #cfcfcf;
+        border-radius: 11px;
+        margin: 8px 4px;
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .button-wrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 10px;
+    }
+}
+
+.search-wrapper {
+    margin-top: 10px;
+    .form-wrapper {
+        font-size: 14px;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        box-sizing: border-box;
+        padding: 12px;
+        .input-wrapper {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            box-sizing: border-box;
+            .input-item {
+                display: inline-block;
+                input {
+                    border: 1px solid #e5e7eb;
+                    border-radius: 6px;
+                    max-width: 200px;
+                    padding: 6px 10px;
+                    outline: none;
+                    caret-color: var(--theme-color);
+                    &::placeholder {
+                        color: #afafaf;
+                    }
+                    &:focus {
+                        border: 1px solid var(--theme-color);
+                        box-shadow: 0 0 4px 0 var(--theme-color);
+                    }
+                }
+                margin: 12px;
+            }
+        }
+        .button-wrapper {
+            button {
+                &.search {
+                    border: 1px solid var(--theme-color);
+                    color: var(--theme-color);
+                }
+                i {
+                    margin-right: 6px;
+                }
+            }
+        }
+    }
+
+}
+
+.list-wrapper {
+    padding-bottom: 30px;
+    .header-wrapper {
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .header {
+        display: inline-block;
+    }
+    .button-wrapper {
+        display: flex;
+        margin: 0;
+        .add {
+            border: 1px solid var(--theme-color);
+            color: var(--theme-color);
+        }
+    }
+
+    .table-container {
+        border-collapse: collapse;
+        margin-top: 6px;
+        overflow: scroll;
+        border: 0.5px solid #ddd;
+        border-radius: 11px;
+        height: 280px;
+    }
+    .table-wrapper {
+        border-collapse: collapse;
+        border-radius: 11px;
+        border: 0.5px solid #ddd;
+        width: 1120px;
+        table {
+            min-width: 100%;
+            border: none;
+            border-collapse: collapse;
+            font-size: 14px;
+            th, td {
+                width: 60px;
+            }
+            thead {
+                th {
+                    padding: 6px;
+                    border: 0.5px solid #ddd;
+                }
+                font-size: 16px;
+                background-color: var(--theme-color-light);
+            }
+            tbody {
+                td {
+                    text-align: center;
+                    border: 0.5px solid #ddd;
+                    .add {
+                        color: var(--theme-color);
+                        border: 1px solid var(--theme-color);
+                    }
+                    .remove {
+                        color: #f98f95;
+                        border: 1px solid #f98f95;
+                    }
+                }
+                tr {
+                    &:nth-child(2n) {
+                        background-color: $theme-color-table;
+                    }
+                }
+            }
+
+        }
+    }
+
+}

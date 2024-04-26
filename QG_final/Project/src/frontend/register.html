@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head> 
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>注册-QG会议可视化系统</title>
+</head>
+<link rel="stylesheet" href="./css/register.css">
+<body>
+    <script>
+        function register() {
+            const json_data = {};
+            let input = document.getElementsByTagName("input");
+            let props = ["username", "password", "phone", "code"];
+            for (let i = 0; i < props.length; ++i) {
+                if (props[i] === "password" && input[i].value.length < 8) {
+                    alert("密码太短，请重新输入！");
+                    return;
+                }
+                if (props[i] !== "code") {
+                    json_data[props[i]] = input[i].value;
+                } else {
+                    if (!input[i].value) {
+                        alert("请输入验证码！");
+                        return;
+                    }
+                }
+            }
+
+            fetch("http://localhost:3002/api/register", {
+                method: "POST",
+                body: JSON.stringify(json_data),
+            }).then((res)=>{
+                if (res.status == 400) alert("请输入完整填入信息！");
+                if (res.status == 409) alert("账号或手机号已注册过！");
+                if (res.status == 201) {
+                        window.location.href = './login.html';
+                }
+            })
+        }
+    </script>
+    <div class="box">
+        <div class="forms">
+            <div class="form-wrapper">
+                <div class="title">
+                    <h1>注册</h1>
+                    <span>开始使用 QG 会议可视化系统！</span>
+                </div>
+                <div class="input-wrapper">
+                    <div class="input-item">
+                        <span class="input-title">账号*</span>
+                        <input type="text" class="ipt">
+                    </div>
+                    <div class="input-item">
+                        <span class="input-title">密码*</span>
+                        <input type="password" class="ipt">
+                        <span class="tips">请至少输入 8 位以上</span>
+                    </div>
+                    <div class="input-item">
+                        <span class="input-title">手机号*</span>
+                        <input type="text" class="ipt">
+                    </div>
+                    <div class="input-item">
+                        <span class="input-title">验证码*</span>
+                        <div class="get-code">
+                            <input type="text" class="ipt">
+                            <button class="btn">获取验证码</button>
+                        </div>
+                    </div>
+                    <button class="btn register" onclick="register()">注册</button>
+                    <div class="login-tips">
+                        已经有账户了？ <span onclick="window.location.href = './login.html'">立即登录</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="pic">
+            <div class="pic-text">QG MEETS YOU</div>
+            <img src="./assets/pic4.jpg" alt="展示图">
+        </div>
+    </div>
+</body>
