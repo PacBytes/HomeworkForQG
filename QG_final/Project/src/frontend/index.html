@@ -210,7 +210,7 @@
                 var buttonWrapper = document.createElement('div');
                 buttonWrapper.className = 'button-wrapper';
                 var editButton = document.createElement('button');
-                editButton.className = 'add';
+                editButton.className = 'edit';
                 editButton.textContent = '编辑';
 
                 // 给编辑按钮添加点击事件监听器
@@ -229,7 +229,9 @@
                                 let tdObjects = {};
                                 for (let i = 0; i < cells.length; ++i) {
                                     tdElements[i].setAttribute('contenteditable', false);
-                                    tdObjects[cells[i]] = tdElements[i].innerHTML;
+                                    let tmp = tdElements[i].innerText.replace("\n", "").replace("<br>", "");
+                                    tdObjects[cells[i]] = tmp;
+                                    console.log(tmp);
                                 }
                                 editButton.innerHTML = "编辑";
                                 saveFuntion(JSON.stringify(tdObjects));
@@ -267,6 +269,107 @@
         inputs.forEach(input =>{
             input.value = "";
         })
+    }
+
+    // 表格新增行
+    function addTableRow(tableId, cells, saveFuntion, deleteFunction){
+        var table = document.getElementById(tableId);
+        var thead = table.getElementsByTagName('thead')[0];
+        var tbody = table.getElementsByTagName('tbody')[0];
+        
+        let length = cells.length + 1;
+
+        var row = document.createElement('tr');
+        for (let i = 0; i < length; ++i) {
+            var cell = document.createElement('td');
+            cell.innerHTML = "请输入内容(密码默认qgfinal)";
+            if (i == 6) {
+                cell.innerText = new Date(Date.now());
+            }
+            if (i == 8) {
+                cell.innerHTML = "";
+                // 创建操作按钮单元格
+                var buttonWrapper = document.createElement('div');
+                buttonWrapper.className = 'button-wrapper';
+                var editButton = document.createElement('button');
+                editButton.className = 'edit';
+                editButton.textContent = '编辑';
+
+                // 给编辑按钮添加点击事件监听器
+                editButton.addEventListener('click', function() {
+                    let tdElements = editButton.parentNode.parentNode.parentNode.childNodes;
+                    console.log(tdElements);
+                    if (editButton.innerHTML === "编辑") {
+                        for (let i = 0; i < cells.length; ++i) {
+                            if (cells[i] === "time") {
+                                continue;
+                            }
+                            tdElements[i].setAttribute('contenteditable', true);
+                        }
+                        editButton.innerHTML = "保存";
+                    } else{
+                            if (editButton.innerHTML === "保存") {
+                                let tdObjects = {};
+                                for (let i = 0; i < cells.length; ++i) {
+                                    tdElements[i].setAttribute('contenteditable', false);
+                                    tdObjects[cells[i]] = tdElements[i].innerText.replace("\n", "").replace("<br>", "");
+                                }
+                                editButton.innerText = "编辑";
+                                tdObjects.password = "qgfinal";
+                                saveFuntion(JSON.stringify(tdObjects));
+                        }
+                    }
+                    
+                });
+
+                var removeButton = document.createElement('button');
+                removeButton.className = 'remove';
+                removeButton.textContent = '删除';
+                removeButton.addEventListener('click', function() {
+                    let tdElements = removeButton.parentNode.parentNode.parentNode.childNodes;
+                    let tdObjects = {};
+                    for (let i = 0; i < cells.length; ++i) {
+                        tdObjects[cells[i]] = tdElements[i].innerText;
+                    }
+                    deleteFunction(JSON.stringify(tdObjects));
+                })
+
+                buttonWrapper.appendChild(editButton);
+                buttonWrapper.appendChild(removeButton);
+                cell.appendChild(buttonWrapper);
+            }
+            row.appendChild(cell);
+        }
+        
+        tbody.appendChild(row);
+    }
+
+        function addUserTableRow(tableId) {
+            let cells = ['username', 'nickname', 'sex', 'phone', 'group', 'grade', 'time', 'role'];
+            function updateUserFunction(updatedUserInfo){
+            fetch("/api/users", {
+                method: "POST",
+                body: updatedUserInfo,
+            }).then((res)=>{
+                console.log(res.status)
+                if (res.status == 201) {
+                    alert("创建成功！");
+                }
+            })
+        }
+
+        function deleteUserFunction(userInfo) {
+            fetch("/api/users", {
+                method: "DELETE",
+                body: userInfo,
+            }).then((res)=>{
+                if (res.status == 204) {
+                    alert("删除成功！");
+                }
+            })
+        }
+
+        addTableRow(tableId, cells, updateUserFunction, deleteUserFunction);
     }
     </script>
 </body>

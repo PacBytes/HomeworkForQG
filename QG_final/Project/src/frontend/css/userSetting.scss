@@ -120,7 +120,7 @@ $theme-color-table: mix(#F6F5FF, #fff, 60%);
     .button-wrapper {
         display: flex;
         margin: 0;
-        .add {
+        .add, .edit {
             border: 1px solid var(--theme-color);
             color: var(--theme-color);
         }
@@ -159,7 +159,7 @@ $theme-color-table: mix(#F6F5FF, #fff, 60%);
                 td {
                     text-align: center;
                     border: 0.5px solid #ddd;
-                    .add {
+                    .add, .edit {
                         color: var(--theme-color);
                         border: 1px solid var(--theme-color);
                     }

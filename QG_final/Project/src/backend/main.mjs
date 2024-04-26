@@ -210,6 +210,7 @@ adminRouter
         }
 
         const aUser = new User(obj);
+        console.log("this");
         await aUser.save()
             .then(() => {
                 ctx.status = 201;
@@ -222,7 +223,7 @@ adminRouter
     .get("/api/users", async (ctx, next) => {
         // 如果不带查询参数（请求全部）
         if (ctx.url == ctx.path) {
-            ctx.body = (await User.find({}, '-_id').exec());
+            ctx.body = JSON.stringify((await User.find({}, '-_id').exec()));
         } else {
             ctx.body = JSON.stringify((await User.find(ctx.query, '-_id')));
             if (!ctx.body) ctx.status = 204;
@@ -239,12 +240,18 @@ adminRouter
             ctx.status = 400;
             return next();
         }
+
+        let objForDelete = {
+            username: obj.username
+        }
         
-        let result = await User.deleteOne(obj)
+        let result = await User.deleteOne(objForDelete)
             .catch(() => {
                 ctx.status = 500;
             });
-        if (result.deletedCount) ctx.status = 204;
+        if (result.deletedCount){
+            ctx.status = 204;
+        }
         return next();
     })
     .put("/api/users", async (ctx, next) => {

@@ -41,7 +41,7 @@ let template = /* html */ `
             </div>
             <div class="button-wrapper">
                 <button class="reset" onclick="clearInputs()"><i class='bx bx-reset'></i>重置</button>
-                <button class="search" onclick="queryUser()"><i class='bx bx-search'></i>搜索</button>
+                <button class="search" onclick="queryUser(1)"><i class='bx bx-search'></i>搜索</button>
             </div>
         </div>
     </div>
@@ -50,8 +50,8 @@ let template = /* html */ `
         <div class="header-wrapper">
             <div class="header">用户列表</div>
             <div class="button-wrapper">
-                <button class="add"><i class='bx bx-add-to-queue' ></i>新增</button>
-                <button class="search"><i class='bx bx-refresh' ></i>刷新</button>
+                <button class="add" onclick="addUserTableRow('userTable')"><i class='bx bx-add-to-queue' ></i>新增</button>
+                <button class="search" onclick="queryUser(0)"><i class='bx bx-refresh' ></i>刷新</button>
             </div>
         </div>
         
@@ -88,21 +88,25 @@ let template2 = /* html */ `
 </div>
 `
 
-function queryUser(){
-    // 选择所有输入元素
-    const inputs = document.querySelectorAll('.input-wrapper input');
+function queryUser(code){
+    let url = "/api/users";
+    if (code == 1) {
+        // 选择所有输入元素
+        const inputs = document.querySelectorAll('.input-wrapper input');
 
-    const params = [];
-    inputs.forEach(input => {
-        const paramName = input.getAttribute('name');
-        const paramValue = input.value.trim();
-        if (paramValue !== '') {
-            params.push(paramName+'='+paramValue);
-        }
-    });
+        const params = [];
+        inputs.forEach(input => {
+            const paramName = input.getAttribute('name');
+            const paramValue = input.value.trim();
+            if (paramValue !== '') {
+                params.push(paramName+'='+paramValue);
+            }
+        });
 
-    const queryParams = params.join('&');
-    const url = "/api/users?"+queryParams;
+        const queryParams = params.join('&');
+        url = "/api/users?"+queryParams;
+    }
+    
 
     function updateUserFunction(updatedUserInfo){
         fetch("/api/users", {
@@ -127,7 +131,9 @@ function queryUser(){
 
     }
 
-    fetch(url)
+    fetch(url, {
+            method: "GET",
+        })
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -141,6 +147,8 @@ function queryUser(){
             updateTable(data, "userTable", cells, updateUserFunction, deleteUserFunction);
         });
 }
+
+
 
 
 export { template as userSettingHTML, template2 as historySettingHTML, queryUser};
